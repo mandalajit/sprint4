@@ -1,7 +1,8 @@
-import 'package:campmart/app/constants/hive_table_constant.dart';
-import 'package:campmart/features/auth/domain/entity/auth_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:recipe/app/constants/hive_table_constant.dart';
+import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
+
 import 'package:uuid/uuid.dart';
 
 part 'auth_hive_model.g.dart';
@@ -13,46 +14,50 @@ final authHiveModelProvider = Provider(
 @HiveType(typeId: HiveTableConstant.studentTableId)
 class AuthHiveModel {
   @HiveField(0)
-  final String studentId;
+  final String id;
 
   @HiveField(1)
-  final String name;
+  final String fullname;
 
   @HiveField(2)
   final String email;
 
   @HiveField(3)
+  final String phone;
+
+  @HiveField(7)
   final String password;
 
   // Constructor
   AuthHiveModel({
-    String? studentId,
-    required this.name,
+    String? id,
+    required this.fullname,
     required this.email,
+    required this.phone,
     required this.password,
-  }) : studentId = studentId ?? const Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
+
+  get studentId => null;
+
+  get username => null;
 
   // empty constructor
-  AuthHiveModel.empty()
-      : this(
-          studentId: '',
-          name: '',
-          email: '',
-          password: '',
-        );
+
 
   // Convert Hive Object to Entity
   AuthEntity toEntity() => AuthEntity(
-        id: studentId,
-        name: name,
+        id: id,
+        fullname: fullname,
         email: email,
-        password: password,
+        phone: phone,
+        password: password, fname: '', lname: '', username: '',
       );
 
   // Convert Entity to Hive Object
   AuthHiveModel toHiveModel(AuthEntity entity) => AuthHiveModel(
-        studentId: const Uuid().v4(),
-        name: entity.name,
+        id: const Uuid().v4(),
+        fullname: entity.fname,
+        phone: entity.phone,
         email: entity.email,
         password: entity.password,
       );
@@ -63,6 +68,8 @@ class AuthHiveModel {
 
   @override
   String toString() {
-    return 'studentId: $studentId, name: $name, email: $email, password: $password';
+    return 'studentId: $id, fname: $fullname, phone: $phone, email: $email, password: $password';
   }
+  
+  static empty() {}
 }

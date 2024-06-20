@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:campmart/core/common/my_snackbar.dart';
-import 'package:campmart/features/auth/domain/entity/auth_entity.dart';
-import 'package:campmart/features/auth/domain/usecases/auth_usecase.dart';
-import 'package:campmart/features/auth/presentation/navigator/login_navigator.dart';
-import 'package:campmart/features/auth/presentation/state/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe/core/common/my_snackbar.dart';
+import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
+import 'package:recipe/features/auth/domain/usecases/auth_usecase.dart';
+import 'package:recipe/features/auth/presentation/navigator/login_navigator.dart';
+import 'package:recipe/features/auth/presentation/state/auth_state.dart';
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>(
   (ref) => AuthViewModel(
@@ -53,11 +53,11 @@ class AuthViewModel extends StateNotifier<AuthState> {
   }
 
   Future<void> loginStudent(
-    String email,
+    String username,
     String password,
   ) async {
     state = state.copyWith(isLoading: true);
-    var data = await authUseCase.loginStudent(email, password);
+    var data = await authUseCase.loginStudent(username, password);
     data.fold(
       (failure) {
         state = state.copyWith(isLoading: false, error: failure.error);
@@ -74,11 +74,9 @@ class AuthViewModel extends StateNotifier<AuthState> {
     navigator.openRegisterView();
   }
 
-  void openLoginView() {
-    // navigator.openLoginView();
+  void openHomeView() {
+    navigator.openHomeView();
   }
 
-  void openHomeView() {
-    navigator.openDashboardView();
-  }
+  void registerUser(AuthEntity user) {}
 }

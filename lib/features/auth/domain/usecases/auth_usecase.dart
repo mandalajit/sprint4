@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:campmart/core/failure/failure.dart';
-import 'package:campmart/features/auth/domain/entity/auth_entity.dart';
-import 'package:campmart/features/auth/domain/repository/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe/core/failure/failure.dart';
+import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
+import 'package:recipe/features/auth/domain/repository/auth_repository.dart';
 
 final authUseCaseProvider = Provider((ref) {
   return AuthUseCase(ref.read(authRepositoryProvider));
@@ -24,7 +24,7 @@ class AuthUseCase {
   }
 
   Future<Either<Failure, bool>> loginStudent(
-      String email, String password) async {
-    return await _authRepository.loginStudent(email, password);
+      String username, String password) async {
+    return await _authRepository.loginStudent(username, password);
   }
 }

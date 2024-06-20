@@ -16,14 +16,14 @@ class RegisterScreen extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'food',
+                text: 'recipe',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
                 ),
               ),
               TextSpan(
-                text: 'recipe',
+                text: 'food',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.orange,

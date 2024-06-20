@@ -1,179 +1,268 @@
-import 'package:campmart/features/auth/domain/entity/auth_entity.dart';
-import 'package:campmart/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:campmart/features/auth/presentation/navigator/register_navigator.dart';
+import 'package:recipe/features/auth/presentation/viewmodel/auth_view_model.dart';
+
+import '../../domain/entity/auth_entity.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({super.key});
 
   @override
   ConsumerState<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends ConsumerState<RegisterView> with RegisterViewRoute {
+class _RegisterViewState extends ConsumerState<RegisterView> {
+
   final _key = GlobalKey<FormState>();
-
-  final _nameController = TextEditingController();
+  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
-  bool isObscure = true;
-  bool isConfirmObscure = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFEFAE0),
       appBar: AppBar(
-        title: const Text('Sign Up'),
-        backgroundColor: const Color.fromARGB(255, 44, 44, 61),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(44, 44, 61, 1),
-              Color.fromARGB(255, 75, 75, 105),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20.0), // Add padding to the left
+          child: Image.asset('assets/images/logo.png'),
+        ),
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'recipe',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+              TextSpan(
+                text: 'food',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.orange,
+                ),
+              ),
             ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
           ),
         ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _key,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 20.0),
-                _buildTextField(_nameController, 'Name', false),
-                const SizedBox(height: 20.0),
-                _buildTextField(_emailController, 'Email address', false),
-                const SizedBox(height: 20.0),
-                _buildPasswordField(_passwordController, 'Password', isObscure, () {
-                  setState(() {
-                    isObscure = !isObscure;
-                  });
-                }),
-                const SizedBox(height: 20.0),
-                _buildPasswordField(_confirmPasswordController, 'Confirm Password', isConfirmObscure, () {
-                  setState(() {
-                    isConfirmObscure = !isConfirmObscure;
-                  });
-                }),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(44, 44, 61, 1),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: const Text('Sign Up'),
-                  onPressed: () {
-                    if (_key.currentState!.validate()) {
-                      var student = AuthEntity(
-                        name: _nameController.text,
-                        image: ref.read(authViewModelProvider).imageName ?? '',
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
+        backgroundColor: Color(0xFFFEFAE0),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
 
-                      ref.read(authViewModelProvider.notifier).registerStudent(student);
-                    }
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Already have an account?',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    TextButton(
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
-                      ),
-                      onPressed: () {
-                        openLoginView();
-                      },
-                    ),
-                  ],
-                ),
-              ],
+        children: [
+          Text("Hi!",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 40,
+              color: Color(0xFF946E54),
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-      ),
-      backgroundColor: Colors.orange[50],
-    );
-  }
 
-  Widget _buildTextField(TextEditingController controller, String labelText, bool obscureText) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: labelText,
-        labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromARGB(255, 77, 64, 255)),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromRGBO(44, 44, 61, 1)),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter $labelText';
-        }
-        return null;
-      },
-    );
-  }
+          SizedBox(
+            height: 5,
+          ),
+          Text("Create new account",
+            style: TextStyle(
+              fontSize: 22,
+              color: Color(0xFF946E54),
+            ),
+          ),
+          Padding(padding: const EdgeInsets.all(25),
+            child:Form(
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _fullNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Full Name',
+                      suffixIcon: Icon(
+                        Icons.person,
+                        size: 25,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color(0xFF946E54),
+                          width: 1.5,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                    ),
+                    validator: ((value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter full name";
+                      }
+                      return null;
+                    }),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      suffixIcon: Icon(
+                        Icons.email,
+                        size: 25,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color(0xFF946E54),
+                          width: 1.5,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                    ),
+                    validator: ((value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter email";
+                      }
+                        return null;
+                    }),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      labelText: 'Phone Number',
+                      suffixIcon: Icon(
+                        Icons.vpn_key,
+                        size: 25,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color(0xFF946E54),
+                          width: 1.5,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                    ),
+                    validator: ((value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter Phone number";
+                      }
+                        return null;
+                    }),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: Icon(
+                        Icons.vpn_key,
+                        size: 25,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color(0xFF946E54),
+                          width: 1.5,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                    ),
+                    validator: ((value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter password";
+                      }
+                      return null;
+                    }),
+                  ),
+                  // SizedBox(
+                  //   height: 40,
+                  // ),
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Confirm Password',
+                  //     suffixIcon: Icon(
+                  //       Icons.vpn_key,
+                  //       size: 25,
+                  //       color: Colors.black.withOpacity(0.7),
+                  //     ),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderSide: const BorderSide(
+                  //         color: Color(0xFF946E54),
+                  //         width: 1.5,
+                  //         style: BorderStyle.solid,
+                  //       ),
+                  //     ),
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.all(Radius.circular(3)),
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  SizedBox(
+                      height: 40,
+                      width: 130,
+                      child: ElevatedButton(onPressed: (){
+                          var user = AuthEntity(
+                            fullname: _fullNameController.text,
+                            email: _emailController.text,
+                            phone: _phoneController.text,
+                            password: _passwordController.text, fname: '', lname: '', username: '',
+                          );
+                          ref
+                              .read(authViewModelProvider.notifier)
+                              .registerUser(user);
+                        },
 
-  Widget _buildPasswordField(TextEditingController controller, String labelText, bool obscureText, VoidCallback toggleVisibility) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: labelText,
-        labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromRGBO(44, 44, 61, 1)),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromRGBO(44, 44, 61, 1)),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        suffixIcon: IconButton(
-          icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
-          onPressed: toggleVisibility,
-        ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFD9A26C), // Background color
+                          ),
+                          child: Text("Sign in",
+                            style: TextStyle(
+                                color: Color(0xFFFEFAE0),
+                                fontSize: 20
+                            ),
+                          )
+                      )
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Text("Or Sign up with google",
+            style: TextStyle(
+                fontSize: 18
+            ),
+          ),
+          SizedBox(width: 12), // Add some space between the text and the image
+          Image.asset(
+            'assets/images/google_logo.png', // Path to your Google logo
+            height: 40, // Adjust the height as needed
+          ),
+        ],
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter $labelText';
-        }
-        return null;
-      },
     );
   }
 }
