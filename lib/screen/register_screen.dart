@@ -16,14 +16,14 @@ class RegisterScreen extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'recipe',
+                text: 'food',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
                 ),
               ),
               TextSpan(
-                text: 'food',
+                text: 'recipe',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.orange,
@@ -39,10 +39,10 @@ class RegisterScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
 
         children: [
-          Text("Hi!",
+          Text("Create new account",
             textAlign: TextAlign.left,
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               color: Color(0xFF946E54),
               fontWeight: FontWeight.bold,
             ),
@@ -51,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Text("Create new account",
+          Text("Hello!",
             style: TextStyle(
               fontSize: 22,
               color: Color(0xFF946E54),
