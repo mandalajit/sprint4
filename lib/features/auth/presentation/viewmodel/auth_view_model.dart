@@ -7,18 +7,25 @@ import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
 import 'package:recipe/features/auth/domain/usecases/auth_usecase.dart';
 import 'package:recipe/features/auth/presentation/navigator/login_navigator.dart';
 import 'package:recipe/features/auth/presentation/state/auth_state.dart';
+import 'package:recipe/providers.dart'; // Adjust the path to your actual file
+
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>(
   (ref) => AuthViewModel(
-    ref.read(loginViewNavigatorProvider),
+    ref.read(loginViewNavigatorProvider as ProviderListenable),
     ref.read(authUseCaseProvider),
   ),
 );
 
+mixin loginViewNavigatorProvider {
+}
+
 class AuthViewModel extends StateNotifier<AuthState> {
+  var navigator;
+
   AuthViewModel(this.navigator, this.authUseCase) : super(AuthState.initial());
   final AuthUseCase authUseCase;
-  final LoginViewNavigator navigator;
+  // final LoginViewNavigator navigator;
 
   Future<void> uploadImage(File? file) async {
     state = state.copyWith(isLoading: true);

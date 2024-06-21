@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
 import 'package:recipe/features/auth/presentation/viewmodel/auth_view_model.dart';
-
-import '../../domain/entity/auth_entity.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
@@ -12,256 +16,302 @@ class RegisterView extends ConsumerStatefulWidget {
 }
 
 class _RegisterViewState extends ConsumerState<RegisterView> {
+  // Check for camera permission
+  checkCameraPermission() async {
+    if (await Permission.camera.request().isRestricted ||
+        await Permission.camera.request().isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
+  File? _img;
+  Future _browseImage(WidgetRef ref, ImageSource imageSource) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image != null) {
+        setState(() {
+          _img = File(image.path);
+          // Send image to server
+          ref.read(authViewModelProvider.notifier).uploadImage(
+                _img!,
+              );
+        });
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  final _gap = const SizedBox(height: 8);
 
   final _key = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
 
+  final _fnameController = TextEditingController(text: 'kiran');
+  final _lnameController = TextEditingController(text: 'kiran123');
+  final _phoneController = TextEditingController(text: '989898989898');
+  final _usernameController = TextEditingController(text: 'kiran');
+  final _passwordController = TextEditingController(text: 'kiran123');
+
+  bool isObscure = true;
+
+  // BatchEntity? _dropDownValue;
+  // final List<CourseEntity> _lstCourseSelected = [];
 
   @override
   Widget build(BuildContext context) {
+    // var batchState = ref.watch(batchViewmodelProvider);
+    // var courseState = ref.watch(courseViewModelProvider);
+
     return Scaffold(
-      backgroundColor: Color(0xFFFEFAE0),
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20.0), // Add padding to the left
-          child: Image.asset('assets/images/logo.png'),
-        ),
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'recipe',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              TextSpan(
-                text: 'food',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.orange,
-                ),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Color(0xFFFEFAE0),
+        title: const Text('Register'),
+        centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-
-        children: [
-          Text("Hi!",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 40,
-              color: Color(0xFF946E54),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          SizedBox(
-            height: 5,
-          ),
-          Text("Create new account",
-            style: TextStyle(
-              fontSize: 22,
-              color: Color(0xFF946E54),
-            ),
-          ),
-          Padding(padding: const EdgeInsets.all(25),
-            child:Form(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Form(
+              key: _key,
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _fullNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Full Name',
-                      suffixIcon: Icon(
-                        Icons.person,
-                        size: 25,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xFF946E54),
-                          width: 1.5,
-                          style: BorderStyle.solid,
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.grey[300],
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  checkCameraPermission();
+                                  _browseImage(ref, ImageSource.camera);
+                                  Navigator.pop(context);
+                                  // Upload image it is not null
+                                },
+                                icon: const Icon(Icons.camera),
+                                label: const Text('Camera'),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  _browseImage(ref, ImageSource.gallery);
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.image),
+                                label: const Text('Gallery'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _img != null
+                            ? FileImage(_img!)
+                            : const AssetImage('assets/images/profile.png')
+                                as ImageProvider,
                       ),
                     ),
-                    validator: ((value){
-                      if(value == null || value.isEmpty){
-                        return "Please enter full name";
+                  ),
+                  const SizedBox(height: 25),
+                  TextFormField(
+                    controller: _fnameController,
+                    decoration: const InputDecoration(
+                      labelText: 'First Name',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter first name';
                       }
                       return null;
                     }),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  _gap,
                   TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      suffixIcon: Icon(
-                        Icons.email,
-                        size: 25,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xFF946E54),
-                          width: 1.5,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                      ),
+                    controller: _lnameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Last Name',
                     ),
-                    validator: ((value){
-                      if(value == null || value.isEmpty){
-                        return "Please enter email";
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter last name';
                       }
-                        return null;
+                      return null;
                     }),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  _gap,
                   TextFormField(
                     controller: _phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      suffixIcon: Icon(
-                        Icons.vpn_key,
-                        size: 25,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xFF946E54),
-                          width: 1.5,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                      ),
+                    decoration: const InputDecoration(
+                      labelText: 'Phone No',
                     ),
-                    validator: ((value){
-                      if(value == null || value.isEmpty){
-                        return "Please enter Phone number";
-                      }
-                        return null;
-                    }),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      suffixIcon: Icon(
-                        Icons.vpn_key,
-                        size: 25,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xFF946E54),
-                          width: 1.5,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                      ),
-                    ),
-                    validator: ((value){
-                      if(value == null || value.isEmpty){
-                        return "Please enter password";
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phoneNo';
                       }
                       return null;
                     }),
                   ),
-                  // SizedBox(
-                  //   height: 40,
-                  // ),
-                  // TextFormField(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Confirm Password',
-                  //     suffixIcon: Icon(
-                  //       Icons.vpn_key,
-                  //       size: 25,
-                  //       color: Colors.black.withOpacity(0.7),
+                  _gap,
+                  // if (batchState.isLoading) ...{
+                  //   const Center(
+                  //     child: CircularProgressIndicator(),
+                  //   )
+                  // } else if (batchState.error != null) ...{
+                  //   Center(
+                  //     child: Text(batchState.error!),
+                  //   )
+                  // } else ...{
+                  //   DropdownButtonFormField<BatchEntity>(
+                  //     items: batchState.lstBatches
+                  //         .map((e) => DropdownMenuItem<BatchEntity>(
+                  //               value: e,
+                  //               child: Text(e.batchName),
+                  //             ))
+                  //         .toList(),
+                  //     onChanged: (value) {
+                  //       _dropDownValue = value;
+                  //     },
+                  //     value: _dropDownValue,
+                  //     decoration: const InputDecoration(
+                  //       labelText: 'Select Batch',
                   //     ),
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderSide: const BorderSide(
-                  //         color: Color(0xFF946E54),
-                  //         width: 1.5,
-                  //         style: BorderStyle.solid,
-                  //       ),
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.all(Radius.circular(3)),
-                  //     ),
+                  //     validator: ((value) {
+                  //       if (value == null) {
+                  //         return 'Please select batch';
+                  //       }
+                  //       return null;
+                  //     }),
                   //   ),
-                  // ),
-                  SizedBox(
-                    height: 40,
+                  // },
+                  _gap,
+                  // if (courseState.isLoading) ...{
+                  //   const Center(
+                  //     child: CircularProgressIndicator(),
+                  //   )
+                  // } else if (courseState.error != null) ...{
+                  //   Center(
+                  //     child: Text(courseState.error!),
+                  //   )
+                  // } else ...{
+                  //   MultiSelectDialogField(
+                  //     title: const Text('Select course'),
+                  //     items: courseState.lstCourses
+                  //         .map(
+                  //           (course) => MultiSelectItem(
+                  //             course,
+                  //             course.courseName,
+                  //           ),
+                  //         )
+                  //         .toList(),
+                  //     listType: MultiSelectListType.CHIP,
+                  //     buttonText: const Text(
+                  //       'Select course',
+                  //       style: TextStyle(color: Colors.black),
+                  //     ),
+                  //     buttonIcon: const Icon(Icons.search),
+                  //     onConfirm: (values) {
+                  //       _lstCourseSelected.clear();
+                  //       _lstCourseSelected.addAll(values);
+                  //     },
+                  //     decoration: BoxDecoration(
+                  //       border: Border.all(
+                  //         color: Colors.black87,
+                  //       ),
+                  //       borderRadius: BorderRadius.circular(5),
+                  //     ),
+                  //     validator: ((value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return 'Please select courses';
+                  //       }
+                  //       return null;
+                  //     }),
+                  //   ),
+                  // },
+                  _gap,
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter username';
+                      }
+                      return null;
+                    }),
                   ),
+                  _gap,
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: isObscure,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
                   SizedBox(
-                      height: 40,
-                      width: 130,
-                      child: ElevatedButton(onPressed: (){
-                          var user = AuthEntity(
-                            fullname: _fullNameController.text,
-                            email: _emailController.text,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          var student = AuthEntity(
+                            fname: _fnameController.text,
+                            lname: _lnameController.text,
+                            // Read the image from state
+                            image:
+                                ref.read(authViewModelProvider).imageName ?? '',
                             phone: _phoneController.text,
-                            password: _passwordController.text, fname: '', lname: '', username: '',
+                            username: _usernameController.text,
+                            password: _passwordController.text,
+                            // batch: _dropDownValue!,
+                            // courses: _lstCourseSelected,
                           );
+
                           ref
                               .read(authViewModelProvider.notifier)
-                              .registerUser(user);
-                        },
-
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFD9A26C), // Background color
-                          ),
-                          child: Text("Sign in",
-                            style: TextStyle(
-                                color: Color(0xFFFEFAE0),
-                                fontSize: 20
-                            ),
-                          )
-                      )
+                              .registerStudent(student);
+                        }
+                      },
+                      child: const Text('Register'),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Text("Or Sign up with google",
-            style: TextStyle(
-                fontSize: 18
-            ),
-          ),
-          SizedBox(width: 12), // Add some space between the text and the image
-          Image.asset(
-            'assets/images/google_logo.png', // Path to your Google logo
-            height: 40, // Adjust the height as needed
-          ),
-        ],
+        ),
       ),
     );
   }

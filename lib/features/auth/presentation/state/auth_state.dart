@@ -1,3 +1,7 @@
+
+
+import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
+
 class AuthState {
   final bool isLoading;
   final String? error;
@@ -19,6 +23,7 @@ class AuthState {
 
   AuthState copyWith({
     bool? isLoading,
+    AuthEntity? authEntity,
     String? error,
     String? imageName,
   }) {
