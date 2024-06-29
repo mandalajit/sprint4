@@ -9,24 +9,17 @@ part of 'get_current_user_dto.dart';
 GetCurrentUserDto _$GetCurrentUserDtoFromJson(Map<String, dynamic> json) =>
     GetCurrentUserDto(
       id: json['_id'] as String,
-      fname: json['fname'] as String,
-      lname: json['lname'] as String,
-      phone: json['phone'] as String,
-      image: json['image'] as String,
-      username: json['username'] as String, batch: '', course: [],
-      // batch: json['batch'] as String,
-      // course:
-          // (json['course'] as List<dynamic>).map((e) => e as String).toList(),
+      fullname: json['fullname'] as String,
+      email: json['email'] as String,
+      phonenumber: json['phonenumber'] as String,
+      password: json['password'] as String,
     );
 
 Map<String, dynamic> _$GetCurrentUserDtoToJson(GetCurrentUserDto instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'fname': instance.fname,
-      'lname': instance.lname,
-      'phone': instance.phone,
-      'image': instance.image,
-      'username': instance.username,
-      // 'batch': instance.batch,
-      // 'course': instance.course,
+      'fullname': instance.fullname,
+      'email': instance.email,
+      'phonenumber': instance.phonenumber,
+      'password': instance.password,
     };

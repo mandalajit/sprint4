@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/features/splash/presentation/navigator/splash_navigator.dart';
+
+import '../navigator/splash_navigator.dart';
+
+
 final splashViewModelProvider =
-    StateNotifierProvider<SplashViewModel, void>((ref) {
+StateNotifierProvider<SplashViewModel, void>((ref) {
   final navigator = ref.read(splashViewNavigatorProvider);
   return SplashViewModel(navigator);
 });

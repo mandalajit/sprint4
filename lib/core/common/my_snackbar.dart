@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/app/navigator_key/navigator_key.dart';
+import '../../app/navigator_key/navigator_key.dart';
 
 showMySnackBar({
   required String message,

@@ -1,5 +1,6 @@
-import 'package:recipe/app/navigator/navigator.dart';
-import 'package:recipe/features/auth/presentation/view/register_view.dart';
+
+import '../../../../app/navigator/navigator.dart';
+import '../view/register_view.dart';
 
 class RegisterViewNavigator {}
 

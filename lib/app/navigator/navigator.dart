@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/app/navigator_key/navigator_key.dart';
+import '../navigator_key/navigator_key.dart';
 
 class NavigateRoute {
   NavigateRoute._();

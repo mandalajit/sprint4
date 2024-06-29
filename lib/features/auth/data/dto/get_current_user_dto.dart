@@ -4,36 +4,27 @@ import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
 part 'get_current_user_dto.g.dart';
 
 @JsonSerializable()
-class GetCurrentUserDto {
-  @JsonKey(name:"_id")
+class GetCurrentUserDto{
+  @JsonKey(name: "_id")
   final String id;
-  final String fname;
-  final String lname;
-  final String phone;
-  final String image;
-  final String username;
-  final String batch;
-  final List<String> course;
+  final String fullname;
+  final String email;
+  final String phonenumber;
+  final String password;
 
   GetCurrentUserDto({
     required this.id,
-    required this.fname,
-    required this.lname,
-    required this.phone,
-    required this.image,
-    required this.username,
-    required this.batch,
-    required this.course,
-  });
-
-  AuthEntity toEntity() {
+    required this.fullname,
+    required this.email,
+    required this.phonenumber,
+    required this.password
+});
+  AuthEntity toEntity(){
     return AuthEntity(
-        id: id,
-        fname: fname,
-        lname: lname,
-        image: image,
-        phone: phone,
-        username: username,
+        id:id,
+        fullname: fullname,
+        email: email,
+        phonenumber: phonenumber,
         password: '');
   }
 

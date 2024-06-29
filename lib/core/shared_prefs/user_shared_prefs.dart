@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/core/failure/failure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final userSharedPrefsProvider = Provider<UserSharedPrefs>((ref) {
+final userSharedPrefsProvider = Provider<UserSharedPrefs>((ref){
+
   return UserSharedPrefs();
 });
 
-class UserSharedPrefs {
+class UserSharedPrefs{
   late SharedPreferences _sharedPreferences;
-  // Set user token
   Future<Either<Failure, bool>> setUserToken(String token) async {
     try {
       _sharedPreferences = await SharedPreferences.getInstance();

@@ -1,82 +1,60 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/core/common/my_snackbar.dart';
-import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
 import 'package:recipe/features/auth/domain/usecases/auth_usecase.dart';
 import 'package:recipe/features/auth/presentation/navigator/login_navigator.dart';
 import 'package:recipe/features/auth/presentation/state/auth_state.dart';
-import 'package:recipe/providers.dart'; // Adjust the path to your actual file
 
+import '../../../../core/common/my_snackbar.dart';
+import '../../domain/entity/auth_entity.dart';
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>(
-  (ref) => AuthViewModel(
-    ref.read(loginViewNavigatorProvider as ProviderListenable),
+      (ref) => AuthViewModel(
+    ref.read(loginViewNavigatorProvider),
     ref.read(authUseCaseProvider),
   ),
 );
 
-mixin loginViewNavigatorProvider {
-}
 
-class AuthViewModel extends StateNotifier<AuthState> {
-  var navigator;
-
-  AuthViewModel(this.navigator, this.authUseCase) : super(AuthState.initial());
+class AuthViewModel extends StateNotifier<AuthState>{
+  AuthViewModel(this.navigator,this.authUseCase): super(AuthState.initial());
   final AuthUseCase authUseCase;
-  // final LoginViewNavigator navigator;
+  final LoginViewNavigator navigator;
 
-  Future<void> uploadImage(File? file) async {
+  Future<void> registerUser(AuthEntity user) async {
     state = state.copyWith(isLoading: true);
-    var data = await authUseCase.uploadProfilePicture(file!);
+    var data = await authUseCase.registerUser(user);
     data.fold(
-      (l) {
-        state = state.copyWith(isLoading: false, error: l.error);
-      },
-      (imageName) {
-        state =
-            state.copyWith(isLoading: false, error: null, imageName: imageName);
-      },
-    );
-  }
-
-  Future<void> registerStudent(AuthEntity student) async {
-    state = state.copyWith(isLoading: true);
-    var data = await authUseCase.registerStudent(student);
-    data.fold(
-      (failure) {
+          (failure) {
         state = state.copyWith(
           isLoading: false,
           error: failure.error,
         );
         showMySnackBar(message: failure.error, color: Colors.red);
       },
-      (success) {
+          (success) {
         state = state.copyWith(isLoading: false, error: null);
         showMySnackBar(message: "Successfully registered");
       },
     );
   }
 
-  Future<void> loginStudent(
-    String username,
-    String password,
-  ) async {
+  Future<void> loginUser(
+      String email,
+      String password,
+      ) async {
     state = state.copyWith(isLoading: true);
-    var data = await authUseCase.loginStudent(username, password);
+    var data = await authUseCase.loginUser(email, password);
     data.fold(
-      (failure) {
+          (failure) {
         state = state.copyWith(isLoading: false, error: failure.error);
         showMySnackBar(message: failure.error, color: Colors.red);
       },
-      (success) {
+          (success) {
         state = state.copyWith(isLoading: false, error: null);
         openHomeView();
       },
     );
   }
-
   void openRegisterView() {
     navigator.openRegisterView();
   }
@@ -84,6 +62,4 @@ class AuthViewModel extends StateNotifier<AuthState> {
   void openHomeView() {
     navigator.openHomeView();
   }
-
-  void registerUser(AuthEntity user) {}
 }

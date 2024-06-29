@@ -1,18 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/app/navigator/navigator.dart';
-import 'package:recipe/features/home/presentation/view/home_view.dart';
 
-final homeViewNavigatorProvider = Provider<HomeViewNavigator>((ref) {
-  return HomeViewNavigator();
-});
+import '../../../../app/navigator/navigator.dart';
+import '../view/home_view.dart';
 
-class HomeViewNavigator {
-  void openLoginView() {}
-}
+final homeViewNavigatorProvider = Provider((ref) => HomeNavigator());
 
+class HomeNavigator {}
 
 mixin HomeViewRoute {
   openHomeView() {
-    NavigateRoute.popAndPushRoute(const HomeView());
+    NavigateRoute.pushRoute(const HomeView());
   }
 }

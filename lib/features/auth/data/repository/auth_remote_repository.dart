@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/core/failure/failure.dart';
@@ -12,28 +10,19 @@ final authRemoteRepositoryProvider = Provider<IAuthRepository>((ref) {
     ref.read(authRemoteDataSourceProvider),
   );
 });
-
-class AuthRemoteRepository implements IAuthRepository {
+class AuthRemoteRepository implements IAuthRepository{
   final AuthRemoteDataSource _authRemoteDataSource;
   AuthRemoteRepository(this._authRemoteDataSource);
 
   @override
-  Future<Either<Failure, String>> uploadProfilePicture(File file) {
-    return _authRemoteDataSource.uploadProfilePicture(file);
+  Future<Either<Failure, bool>> loginUser(String email, String password) {
+    // TODO: implement loginUser
+    return _authRemoteDataSource.loginUser(email, password);
   }
 
   @override
-  Future<Either<Failure, bool>> loginStudent(String username, String password) {
-    return _authRemoteDataSource.loginStudent(username, password);
-  }
-
-  @override
-  Future<Either<Failure, bool>> registerStudent(AuthEntity student) {
-    return _authRemoteDataSource.registerStudent(student);
-  }
-
-  @override
-  Future<Either<Failure, AuthEntity>> getCurrentUser() {
-   return _authRemoteDataSource.getCurrentUser();
+  Future<Either<Failure, bool>> registerUser(AuthEntity user) {
+    // TODO: implement registerUser
+    return _authRemoteDataSource.registerUser(user);
   }
 }

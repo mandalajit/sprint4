@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/core/failure/failure.dart';
-import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
-import 'package:recipe/features/auth/domain/repository/auth_repository.dart';
+
+import '../entity/auth_entity.dart';
+import '../repository/auth_repository.dart';
 
 final authUseCaseProvider = Provider((ref) {
   return AuthUseCase(ref.read(authRepositoryProvider));
@@ -15,20 +16,12 @@ class AuthUseCase {
 
   AuthUseCase(this._authRepository);
 
-  Future<Either<Failure, String>> uploadProfilePicture(File file) async {
-    return await _authRepository.uploadProfilePicture(file);
+  Future<Either<Failure, bool>> registerUser(AuthEntity student) async {
+    return await _authRepository.registerUser(student);
   }
 
-  Future<Either<Failure, bool>> registerStudent(AuthEntity student) async {
-    return await _authRepository.registerStudent(student);
-  }
-
-  Future<Either<Failure, bool>> loginStudent(
-      String username, String password) async {
-    return await _authRepository.loginStudent(username, password);
-  }
-
-  Future<Either<Failure, AuthEntity>> getCurrentUser() async {
-    return await _authRepository.getCurrentUser();
+  Future<Either<Failure, bool>> loginUser(
+      String email, String password) async {
+    return await _authRepository.loginUser(email, password);
   }
 }

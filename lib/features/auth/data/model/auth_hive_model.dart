@@ -1,89 +1,68 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:recipe/app/constants/hive_table_constant.dart';
-import 'package:recipe/features/auth/domain/entity/auth_entity.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../app/constants/hive_table_constant.dart';
+import '../../domain/entity/auth_entity.dart';
 
 part 'auth_hive_model.g.dart';
 
 final authHiveModelProvider = Provider(
-  (ref) => AuthHiveModel.empty(),
+      (ref) => AuthHiveModel.empty(),
 );
 
-@HiveType(typeId: HiveTableConstant.studentTableId)
+@HiveType(typeId: HiveTableConstant.userTableId)
 class AuthHiveModel {
   @HiveField(0)
-  final String studentId;
+  final String id;
 
   @HiveField(1)
-  final String fname;
+  final String fullname;
 
   @HiveField(2)
-  final String lname;
+  final String email;
 
   @HiveField(3)
-  final String phone;
+  final String phonenumber;
 
-  // @HiveField(4)
-  // final BatchHiveModel batch;
-
-  // @HiveField(5)
-  // final List<CourseHiveModel> courses;
-
-  @HiveField(6)
-  final String username;
-
-  @HiveField(7)
+  @HiveField(4)
   final String password;
 
   // Constructor
   AuthHiveModel({
-    String? studentId,
-    required this.fname,
-    required this.lname,
-    required this.phone,
-    // required this.batch,
-    // required this.courses,
-    required this.username,
+    String? id,
+    required this.fullname,
+    required this.email,
+    required this.phonenumber,
     required this.password,
-  }) : studentId = studentId ?? const Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
 
   // empty constructor
   AuthHiveModel.empty()
       : this(
-          studentId: '',
-          fname: '',
-          lname: '',
-          phone: '',
-          // batch: BatchHiveModel.empty(),
-          // courses: [],
-          username: '',
-          password: '',
-        );
+    id: '',
+    fullname: '',
+    email: '',
+    phonenumber: '',
+    password: '',
+  );
 
   // Convert Hive Object to Entity
   AuthEntity toEntity() => AuthEntity(
-        id: studentId,
-        fname: fname,
-        lname: lname,
-        phone: phone,
-        // batch: batch.toEntity(),
-        // courses: CourseHiveModel.empty().toEntityList(courses),
-        username: username,
-        password: password,
-      );
+    id: id,
+    fullname: fullname,
+    phonenumber: phonenumber,
+    email: email,
+    password: password,
+  );
 
   // Convert Entity to Hive Object
   AuthHiveModel toHiveModel(AuthEntity entity) => AuthHiveModel(
-        studentId: const Uuid().v4(),
-        fname: entity.fname,
-        lname: entity.lname,
-        phone: entity.phone,
-        // batch: BatchHiveModel.empty().fromEntity(entity.batch),
-        // courses: CourseHiveModel.empty().fromEntityList(entity.courses),
-        username: entity.username,
-        password: entity.password,
-      );
+    id: const Uuid().v4(),
+    fullname: entity.fullname,
+    email: entity.email,
+    phonenumber: entity.phonenumber,
+    password: entity.password,
+  );
 
   // Convert Entity List to Hive List
   List<AuthHiveModel> toHiveModelList(List<AuthEntity> entities) =>
@@ -91,9 +70,6 @@ class AuthHiveModel {
 
   @override
   String toString() {
-    return 'studentId: $studentId, fname: $fname, lname: $lname, phone: $phone, username: $username, password: $password';
+    return 'id: $id, fullname: $fullname, email: $email, phonenumber: $phonenumber, password: $password';
   }
-  // String toString() {
-  //   return 'studentId: $studentId, fname: $fname, lname: $lname, phone: $phone, batch: $batch, courses: $courses, username: $username, password: $password';
-  // }
 }

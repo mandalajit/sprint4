@@ -1,13 +1,13 @@
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:recipe/app/constants/api_endpoint.dart';
 
-
 import 'dio_error_interceptor.dart';
 
 final httpServiceProvider = Provider<Dio>(
-  (ref) => HttpService(Dio()).dio,
+    (ref) => HttpService(Dio()).dio,
 );
 
 class HttpService {

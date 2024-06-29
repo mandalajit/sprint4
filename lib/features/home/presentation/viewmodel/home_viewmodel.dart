@@ -1,23 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/core/common/my_snackbar.dart';
-import 'package:recipe/features/home/presentation/navigator/home_navigator.dart';
 
-final homeViewModelProvider = StateNotifierProvider<HomeViewModel, bool>(
-  (ref) => HomeViewModel(ref.read(homeViewNavigatorProvider)),
-);
+import '../navigator/home_navigator.dart';
 
-class HomeViewModel extends StateNotifier<bool> {
-  HomeViewModel(this.homeNavigator) : super(false);
-  final HomeViewNavigator homeNavigator;
+final dashboardViewModelProvider =
+StateNotifierProvider<HomeViewModel, void>((ref) {
+  final navigator = ref.read(homeViewNavigatorProvider);
+  return HomeViewModel(navigator);
+});
 
-  void logout() async {
-    showMySnackBar(message: 'Logging out....', color: Colors.red);
-    await Future.delayed(const Duration(seconds: 1));
-    openLoginView();
-  }
-
-  openLoginView() {
-    homeNavigator.openLoginView();
-  }
+class HomeViewModel extends StateNotifier<void> {
+  HomeViewModel(this.navigator) : super(null);
+  HomeNavigator navigator;
 }
