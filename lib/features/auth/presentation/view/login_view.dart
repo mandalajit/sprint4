@@ -25,7 +25,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           child: Image.asset('assets/images/logo.png'),
         ),
         title: RichText(
-          text: TextSpan(
+          text: const TextSpan(
             children: [
               TextSpan(
               text: 'Recipe',

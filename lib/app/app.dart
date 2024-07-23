@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/features/splash/presentation/view/splash_view.dart';
-
-
+import 'package:recipe/features/recipe_listing/presentation/view/recipe_listing_view.dart';
 import 'navigator_key/navigator_key.dart';
 
 class App extends StatelessWidget {
@@ -12,7 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       navigatorKey: AppNavigator.navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: const SplashView(),
+      home: const HomeView(),
     );
   }
 }

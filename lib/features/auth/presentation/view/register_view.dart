@@ -28,7 +28,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           child: Image.asset('assets/images/logo.png'),
         ),
         title: RichText(
-          text: TextSpan(
+          text: const TextSpan(
             children: [
               TextSpan(
                 text: 'Recipe',

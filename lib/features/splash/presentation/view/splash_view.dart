@@ -19,26 +19,26 @@ class _SplashVIewState extends ConsumerState<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFEFAE0),
+      backgroundColor: const Color(0xFFFEFAE0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // Add your splash screen content here, such as a logo or animation
             Image.asset('assets/images/logo.png'),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             RichText(
-              text: TextSpan(
+              text: const TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Adopt',
+                    text: 'recipe',
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.black,
                     ),
                   ),
                   TextSpan(
-                    text: 'apet',
+                    text: 'food',
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.orange,

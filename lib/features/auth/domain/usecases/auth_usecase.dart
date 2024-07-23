@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';

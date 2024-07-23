@@ -16,13 +16,13 @@ class AuthRemoteRepository implements IAuthRepository{
 
   @override
   Future<Either<Failure, bool>> loginUser(String email, String password) {
-    // TODO: implement loginUser
+    
     return _authRemoteDataSource.loginUser(email, password);
   }
 
   @override
   Future<Either<Failure, bool>> registerUser(AuthEntity user) {
-    // TODO: implement registerUser
+    
     return _authRemoteDataSource.registerUser(user);
   }
 }

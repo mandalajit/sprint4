@@ -11,7 +11,7 @@ class HiveService {
     var directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
 
-    Hive.registerAdapter(AuthHiveModelAdapter());
+    Hive.registerAdapter(AuthHiveModelAdapter() as TypeAdapter);//add as TypeAdapter
   }
 
 
@@ -37,4 +37,7 @@ class HiveService {
     box.close();
     return user;
   }
+}
+
+class AuthHiveModelAdapter {  //this is by fixing AuthHiveModelAdapter hovering and this has beed add
 }

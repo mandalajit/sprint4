@@ -9,99 +9,139 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  int _selectedIndex = 0;
-  List<Widget> lstBottomScreen = [
-    const Center(child: Text("Dashboard")),
-    const Center(child: Text("Profile"))
-  ];
 
+  // int _selectedIndex = 0;
+  // List<Widget> lstBottomScreen = [
+  //   const Center(child: Text("Dashboard")),
+  //   const Center(child: Text("Profile"))
+  // ];
+//   final int pet = 3;
+//   final categories = 3;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFEFAE0),
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20.0), // Add padding to the left
-          child: Image.asset('assets/images/logo.png'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 20.0), // Add padding to the left
+            child: Image.asset('assets/images/logo.png'),
+          ),
+          title: RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text: 'recipe',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+                TextSpan(
+                  text: 'food',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.orange,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // backgroundColor: Color(0xFFB2967D),
         ),
-        title: RichText(
-          text: TextSpan(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+
             children: [
-              TextSpan(
-                text: 'Adopt',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
+              Container(
+                width: MediaQuery.of(context).size.width * 0.7, // Adjust width as needed
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF8B5E3C)), // Brown border
+                    ),
+                    prefixIcon: Icon(Icons.search),
+                  ),
                 ),
               ),
-              TextSpan(
-                text: 'apet',
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(90, 45),
+                      backgroundColor: Color(0xFF8B5E3C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: Text(
+                      'nonveg',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(90, 45),
+                      backgroundColor: Color(0xFF8B5E3C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: Text(
+                      'veg',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(90, 45),
+                      backgroundColor: Color(0xFF8B5E3C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: Text(
+                      'Others',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text("Featured food",
                 style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.orange,
+
+                ),),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: ListTile(
+                  leading: const Icon(Icons.abc), // Example icon, replace with your content
+                  title: Text('food Information'), // Example title, replace with your content
+                  subtitle: Text('Details about the selected food'), // Example subtitle, replace with your content
+                  trailing: Icon(Icons.arrow_forward), // Example trailing icon, replace with your content
+                  onTap: () {
+                    // Handle tap event
+                  },
                 ),
               ),
             ],
           ),
         ),
-        backgroundColor: Color(0xFFFEFAE0),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            height: 220,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage(
-                  "assets/images/dashboard_image.png",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              children: [
-                Spacer(),
-                SizedBox(height: 16), // Adds some padding from the top
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.5),
-                      hintText: 'Search',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 80),
-              ],
-            ),
-          ),
-
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.brown,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-        ],
-
       ),
     );
   }
+
 }

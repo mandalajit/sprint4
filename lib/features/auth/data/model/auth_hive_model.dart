@@ -4,10 +4,10 @@ import 'package:uuid/uuid.dart';
 import '../../../../app/constants/hive_table_constant.dart';
 import '../../domain/entity/auth_entity.dart';
 
-part 'auth_hive_model.g.dart';
+// part 'auth_hive_model.g.dart';
 
 final authHiveModelProvider = Provider(
-      (ref) => AuthHiveModel.empty(),
+  (ref) => AuthHiveModel.empty(),
 );
 
 @HiveType(typeId: HiveTableConstant.userTableId)
@@ -39,30 +39,30 @@ class AuthHiveModel {
   // empty constructor
   AuthHiveModel.empty()
       : this(
-    id: '',
-    fullname: '',
-    email: '',
-    phonenumber: '',
-    password: '',
-  );
+          id: '',
+          fullname: '',
+          email: '',
+          phonenumber: '',
+          password: '',
+        );
 
   // Convert Hive Object to Entity
   AuthEntity toEntity() => AuthEntity(
-    id: id,
-    fullname: fullname,
-    phonenumber: phonenumber,
-    email: email,
-    password: password,
-  );
+        id: id,
+        fullname: fullname,
+        phonenumber: phonenumber,
+        email: email,
+        password: password,
+      );
 
   // Convert Entity to Hive Object
   AuthHiveModel toHiveModel(AuthEntity entity) => AuthHiveModel(
-    id: const Uuid().v4(),
-    fullname: entity.fullname,
-    email: entity.email,
-    phonenumber: entity.phonenumber,
-    password: entity.password,
-  );
+        id: const Uuid().v4(),
+        fullname: entity.fullname,
+        email: entity.email,
+        phonenumber: entity.phonenumber,
+        password: entity.password,
+      );
 
   // Convert Entity List to Hive List
   List<AuthHiveModel> toHiveModelList(List<AuthEntity> entities) =>
